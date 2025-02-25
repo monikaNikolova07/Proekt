@@ -28,7 +28,7 @@ namespace Proekt1
             {
                 DefaltSeed();
             }
-
+               
             while (true)
             {
                 Console.WriteLine("Избери действие:");
@@ -38,7 +38,13 @@ namespace Proekt1
                 Console.WriteLine("4 - Добави Реквизит");
                 Console.WriteLine("5 - Свързване на Театъра с Актьорите:");
                 Console.WriteLine("6 - Свързване на пиеси с Актьорите:");
-                Console.WriteLine("7 - Изход");
+                Console.WriteLine("7 - Намиране на актьор по име:");
+                Console.WriteLine("8 - Изпечатване на всички театри:");
+                Console.WriteLine("9 - Намери в кой театър кои актьори играят:");
+                Console.WriteLine("10 - Намиране по град колго броя актьори са в него и техните имена:");
+                Console.WriteLine("11 - Намери театър по ваведена година");
+                Console.WriteLine("12 - Намери театър по ваведен град");
+                Console.WriteLine("15 - Изход");
 
                 var choice = Console.ReadLine();
 
@@ -61,16 +67,35 @@ namespace Proekt1
                         break;
                     case "6":
                         AddUnite_Plays();
-                        return;
+                        break;
                     case "7":
+                        Zaqvka1();
+                        break;
+                    case "8":
+                        Zaqvka2();
+                        break;
+                    case "9":
+                        Zaqvka3();
+                        break;
+                    case "10":
+                        Zaqvka4();
+                        break;
+                    case "11":
+                        Zaqvka5();
+                        break;
+                    case "12":
+                        Zaqvka6();
+                        break;
+                    case "15":
                         Console.WriteLine();
-                        return;
+                        break;
                     default:
                         Console.WriteLine("Невалиден избор.");
                         break;
+
+                    Console.ReadLine();
                 }
             }
-            Console.ReadLine();
         }
 
         static void DefaultCreate()
@@ -88,7 +113,7 @@ namespace Proekt1
                 {
                     try
                     {
-                        int rowsAffected = comand.ExecuteNonQuery();
+                       comand.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
@@ -99,9 +124,7 @@ namespace Proekt1
                 {
                     try
                     {
-
-                        int rowsAffected = comand.ExecuteNonQuery();
-
+                       comand.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
@@ -112,8 +135,7 @@ namespace Proekt1
                 {
                     try
                     {
-                        int rowsAffected = comand.ExecuteNonQuery();
-
+                        comand.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
@@ -124,8 +146,7 @@ namespace Proekt1
                 {
                     try
                     {
-                        int rowsAffected = comand.ExecuteNonQuery();
-
+                        comand.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
@@ -136,8 +157,7 @@ namespace Proekt1
                 {
                     try
                     {
-                        int rowsAffected = comand.ExecuteNonQuery();
-
+                       comand.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
@@ -150,12 +170,18 @@ namespace Proekt1
 
         static void DefaltSeed()
         {
-            string insert = "INSERT INTO [Teathers] ([Name], [Year_Creation], [City])VALUES ('Градски Театър', 1900, 'София'),('Национален Театър', 1850, 'Пловдив'),('Кралски театър', 1888, 'Лондон'),('Бродвей театър', 1903, 'Ню Йорк');";
-            string insert1 = "INSERT INTO [Actors] ([First_Name], [Last_Name], [Birthday], [Education], [City])VALUES ('Иван', 'Иванов', '1980-01-01', 'Висше изкуство', 'София'), ('Петър', 'Петров', '1990-05-15', 'Театрално образование', 'Варна'),('Иван', 'Петров', '1985-06-15', 'Национална академия за театър и филм', 'София'),('Ема', 'Джонсън', '1992-09-22', 'Лондонска театрална академия', 'Лондон');";
-            string insert2 = "INSERT INTO [Plays] ([Title], [Years])VALUES ('Хамлет', 1600),('Ромео и Жулиета', 1597),('Женитба', 1842),('Макбет', 1606);";
-            string insert3 = "INSERT INTO [Proprietary] ([Clothes], [Subjects], [Electronics])VALUES('Костюми', 'Реквизит', 'Светлини'),('Сцени', 'Реквизит', 'Звук'),('Костюми класически', 'Театрални реквизити', 'Звукова апаратура'),('Модерни костюми', 'Сценични декори', 'Осветителни тела');";
-            string insert4 = "INSERT INTO [Unite] ([Id_Teathers], [Id_Actors])VALUES (1, 1),(2, 2),(1, 3), (3, 3);";
-            string insert5 = "INSERT INTO [Unite_Plays] ([Id_Plays], [Id_Actors])VALUES(1, 1),(2, 1),(3, 2),(4, 3);";
+            string insert = "INSERT INTO [Teathers] ([Name], [Year_Creation], [City]) VALUES (N'Градски Театър', 1900, N'София'), (N'Национален Театър', 1850, N'Пловдив'), (N'Кралски театър', 1888, N'Лондон'), (N'Бродвей театър', 1903, N'Ню Йорк');";
+
+            string insert1 = "INSERT INTO [Actors] ([First_Name], [Last_Name], [Birthday], [Education], [City]) VALUES (N'Иван', N'Иванов', '1980-01-01', N'Висше изкуство', N'София'), (N'Петър', N'Петров', '1990-05-15', N'Театрално образование', N'Варна'), (N'Иван', N'Петров', '1985-06-15', N'Национална академия за театър и филм', N'София'), (N'Ема', N'Джонсън', '1992-09-22', N'Лондонска театрална академия', N'Лондон');";
+
+            string insert2 = "INSERT INTO [Plays] ([Title], [Years]) VALUES (N'Хамлет', 1600), (N'Ромео и Жулиета', 1597), (N'Женитба', 1842), (N'Макбет', 1606);";
+
+            string insert3 = "INSERT INTO [Proprietary] ([Clothes], [Subjects], [Electronics]) VALUES (N'Костюми', N'Реквизит', N'Светлини'), (N'Сцени', N'Реквизит', N'Звук'), (N'Костюми класически', N'Театрални реквизити', N'Звукова апаратура'), (N'Модерни костюми', N'Сценични декори', N'Осветителни тела');";
+
+            string insert4 = "INSERT INTO [Unite] ([Id_Teathers], [Id_Actors]) VALUES (1, 1), (2, 2), (1, 3), (3, 3);";
+
+            string insert5 = "INSERT INTO [Unite_Plays] ([Id_Plays], [Id_Actors]) VALUES (1, 1), (2, 1), (3, 2), (4, 3);";
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -163,7 +189,7 @@ namespace Proekt1
                 {
                     try
                     {
-                        int rowsAffected = comand.ExecuteNonQuery();
+                        comand.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
@@ -174,8 +200,7 @@ namespace Proekt1
                 {
                     try
                     {
-                        int rowsAffected = comand.ExecuteNonQuery();
-
+                         comand.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
@@ -186,8 +211,7 @@ namespace Proekt1
                 {
                     try
                     {
-                        int rowsAffected = comand.ExecuteNonQuery();
-
+                        comand.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
@@ -198,8 +222,7 @@ namespace Proekt1
                 {
                     try
                     {
-                        int rowsAffected = comand.ExecuteNonQuery();
-
+                        comand.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
@@ -210,8 +233,7 @@ namespace Proekt1
                 {
                     try
                     {
-                        int rowsAffected = comand.ExecuteNonQuery();
-
+                        comand.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
@@ -246,8 +268,8 @@ namespace Proekt1
                     try
                     {
                         conn.Open();
-                        int rowsAffected = comand.ExecuteNonQuery();
-                        Console.WriteLine($"Успешно добавихте {rowsAffected} запис(а) в таблицата Teathers.");
+                        comand.ExecuteNonQuery();
+                        Console.WriteLine($"Успешно добавихте запис в таблицата Teathers.");
                     }
                     catch (Exception ex)
                     {
@@ -289,8 +311,8 @@ namespace Proekt1
                     try
                     {
                         connection.Open();
-                        int rowsAffected = comand.ExecuteNonQuery();
-                        Console.WriteLine($"Успешно добавихте {rowsAffected} запис(а) в таблицата Actors.");
+                        comand.ExecuteNonQuery();
+                        Console.WriteLine($"Успешно добавихте запис в таблицата Actors.");
                     }
                     catch (Exception ex)
                     {
@@ -320,8 +342,8 @@ namespace Proekt1
                     try
                     {
                         connection.Open();
-                        int br = comand.ExecuteNonQuery();
-                        Console.WriteLine($"Успешно добавихте {br} запис(а) в таблицата Plays.");
+                        comand.ExecuteNonQuery();
+                        Console.WriteLine($"Успешно добавихте запис в таблицата Plays.");
                     }
                     catch (Exception ex)
                     {
@@ -355,8 +377,8 @@ namespace Proekt1
                     try
                     {
                         connection.Open();
-                        int rowsAffected = comand.ExecuteNonQuery();
-                        Console.WriteLine($"Успешно добавихте {rowsAffected} запис(а) в таблицата Proprietary.");
+                        comand.ExecuteNonQuery();
+                        Console.WriteLine($"Успешно добавихте запис в таблицата Proprietary.");
                     }
                     catch (Exception ex)
                     {
@@ -386,8 +408,8 @@ namespace Proekt1
                     try
                     {
                         connection.Open();
-                        int rowsAffected = comand.ExecuteNonQuery();
-                        Console.WriteLine($"Успешно добавихте {rowsAffected} запис(а) в таблицата Unite.");
+                        comand.ExecuteNonQuery();
+                        Console.WriteLine($"Успешно добавихте запис в таблицата Unite.");
                     }
                     catch (Exception ex)
                     {
@@ -400,25 +422,25 @@ namespace Proekt1
         static void AddUnite_Plays()
         {
             Console.Write("Ад театър: ");
-            int id_Plays = int.Parse(Console.ReadLine());
+            int id_plays = int.Parse(Console.ReadLine());
 
             Console.Write("Ад актьор: ");
-            int id_Actors = int.Parse(Console.ReadLine());
+            int id_actors = int.Parse(Console.ReadLine());
 
-            string sql = "INSERT INTO Unite (Id_Plays, Id_Actors) VALUES (@Id_Plays, @Id_Actors)";
+            string sql = "INSERT INTO Unite_Plays (Id_Plays, Id_Actors) VALUES (@Id_Plays, @Id_Actors)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand comand = new SqlCommand(sql, connection))
                 {
-                    comand.Parameters.AddWithValue("@Id_Plays", id_Plays);
-                    comand.Parameters.AddWithValue("@Id_Actors", id_Actors);
+                    comand.Parameters.AddWithValue("@Id_Plays", id_plays);
+                    comand.Parameters.AddWithValue("@Id_Actors", id_actors);
 
                     try
                     {
                         connection.Open();
-                        int rowsAffected = comand.ExecuteNonQuery();
-                        Console.WriteLine($"Успешно добавихте {rowsAffected} запис(а) в таблицата Unite.");
+                        comand.ExecuteNonQuery();
+                        Console.WriteLine($"Успешно добавихте запис в таблицата Unite_Plays.");
                     }
                     catch (Exception ex)
                     {
@@ -427,5 +449,157 @@ namespace Proekt1
                 }
             }
         }
+
+        static void Zaqvka1()
+        {
+            Console.WriteLine("Ваведете името което искате да проверите дали съществува:");
+            string name = Console.ReadLine();
+            string sql = $"SELECT COUNT(*)\r\nFROM [Actors]\r\nWHERE [First_name] = '{name}';";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                using (SqlCommand comand = new SqlCommand(sql, connection))
+                {
+                    
+                    using (SqlDataReader reader = comand.ExecuteReader())
+                    {
+                        
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"Има {reader[0]} актьор(и) с името {name} ");
+                        }
+                    }
+                }
+            }
+        }
+
+        static void Zaqvka2()
+        {
+            Console.WriteLine("Всички театри ваведени в системата:");
+            string sql = $"SELECT *\r\nFROM [Teathers];";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                using (SqlCommand comand = new SqlCommand(sql, connection))
+                {
+
+                    using (SqlDataReader reader = comand.ExecuteReader())
+                    {
+
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"{reader[1]}");
+                        }
+                    }
+                }
+            }
+        }
+
+        static void Zaqvka3()
+        {
+            Console.WriteLine("Ваведете teatyr, в който искате да видите актьорския състав :");
+            string name = Console.ReadLine();
+            string sql = $"SELECT a.First_name, a.Last_name\r\nFROM Teathers t\r\nJOIN Unite u ON t.Id_Teathers = u.Id_Teathers\r\nJOIN Actors a ON u.Id_Actors = a.Id_Actors\r\nWHERE t.[Name] = N'{name}'";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                using (SqlCommand comand = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = comand.ExecuteReader())
+                    {
+
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"{reader[0]} {reader[1]}");
+                        }
+                    }
+                }
+            }
+        }
+
+        static void Zaqvka4()
+        {
+            Console.WriteLine("Ваведете град :");
+            string city = Console.ReadLine();
+            string sql = $"SELECT \r\n    t.City,\r\n    COUNT(DISTINCT a.Id_Actors) AS ActorsCount\r\nFROM Teathers t\r\nJOIN Unite u ON t.Id_Teathers = u.Id_Teathers\r\nJOIN Actors a ON u.Id_Actors = a.Id_Actors\r\nWHERE t.City = N'{city}'\r\nGROUP BY t.City;";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                using (SqlCommand comand = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = comand.ExecuteReader())
+                    {
+
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"{reader[1]}");
+                        }
+                    }
+                }
+            }
+        }
+
+        static void Zaqvka5()
+        {
+            Console.WriteLine("Ваведете година :");
+            int year = int.Parse(Console.ReadLine());
+            string sql = $"SELECT Name, Year_Creation, City\r\nFROM Teathers \r\nWHERE Year_Creation = '{year}';";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                using (SqlCommand comand = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = comand.ExecuteReader())
+                    {
+
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"{reader[2]}");
+                        }
+                    }
+                }
+            }
+        }
+
+        static void Zaqvka6()
+        {
+            Console.WriteLine("Ваведете град :");
+            string city = Console.ReadLine();
+            string sql = $"SELECT [Name], Year_Creation, City\r\nFROM Teathers \r\nWHERE City = N'{city}';";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                using (SqlCommand comand = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = comand.ExecuteReader())
+                    {
+
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"{reader[0]}");
+                        }
+                    }
+                }
+            }
+        }
+
+
+        //1.Намиране на брой актьори по име
+        //2.Изпечатване на всички театри
+        //3.Намери в кой театър кои актьори играят 
+        //4.Намиране по град колго броя актьори са в него
+        //5.Намери театрите по ваведена година
+        //6.Намери театъра по ваведен град
+        //Намери по театър, в този театър кои песи се играят
+        //Намери по пиеса, кои актьори играят
+        //Брой актьори във всеки град:
+
+
     }
 }
