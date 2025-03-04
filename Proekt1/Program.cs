@@ -28,9 +28,10 @@ namespace Proekt1
             {
                 DefaltSeed();
             }
-               
+
             while (true)
             {
+                //Попълване на таблица
                 Console.WriteLine("Избери действие:");
                 Console.WriteLine("1 - Добави Театър");
                 Console.WriteLine("2 - Добави Актьор");
@@ -38,13 +39,19 @@ namespace Proekt1
                 Console.WriteLine("4 - Добави Реквизит");
                 Console.WriteLine("5 - Свързване на Театъра с Актьорите:");
                 Console.WriteLine("6 - Свързване на пиеси с Актьорите:");
-                Console.WriteLine("7 - Намиране на актьор по име:");
-                Console.WriteLine("8 - Изпечатване на всички театри:");
-                Console.WriteLine("9 - Намери в кой театър кои актьори играят:");
-                Console.WriteLine("10 - Намиране по град колго броя актьори са в него и техните имена:");
-                Console.WriteLine("11 - Намери театър по ваведена година");
-                Console.WriteLine("12 - Намери театър по ваведен град");
-                Console.WriteLine("15 - Изход");
+                //Заявки
+                Console.WriteLine("Заявки:");
+                Console.WriteLine("7 (заявка 1) - Намиране на актьор по име:");
+                Console.WriteLine("8 (заявка 2) - Изпечатване на всички театри:");
+                Console.WriteLine("9 (заявка 3) - Намери в кой театър кои актьори играят:");
+                Console.WriteLine("10 (заявка 4) - Намиране по град колго броя актьори са в него и техните имена:");
+                Console.WriteLine("11 (заявка 5) - Намери театър по ваведена година");
+                Console.WriteLine("12 (заявка 6) - Намери театър по ваведен град");
+                Console.WriteLine("13 (заявка 7) - Намери акьора в кои пиеси играе:");
+                Console.WriteLine("14 (заявка 8) - Намери всички актори които са ваведени в таблицата");
+                Console.WriteLine("15 (заявка 9) - Намери актьора в кой театър е :");
+                Console.WriteLine("16 (заявка 10) - При вавеждане на град да ми извежда актьорите от този град кои постановки играят и в кой театър");
+                Console.WriteLine("17 - Изход");
 
                 var choice = Console.ReadLine();
 
@@ -68,6 +75,7 @@ namespace Proekt1
                     case "6":
                         AddUnite_Plays();
                         break;
+                    //Заявки
                     case "7":
                         Zaqvka1();
                         break;
@@ -86,14 +94,26 @@ namespace Proekt1
                     case "12":
                         Zaqvka6();
                         break;
+                    case "13":
+                        Zaqvka7();
+                        break;
+                    case "14":
+                        Zaqvka8();
+                        break;
                     case "15":
+                        Zaqvka9();
+                        break;
+                    case "16":
+                        Zaqvka10();
+                        break;
+                    case "17":
                         Console.WriteLine();
                         break;
                     default:
                         Console.WriteLine("Невалиден избор.");
                         break;
 
-                    Console.ReadLine();
+                        Console.ReadLine();
                 }
             }
         }
@@ -113,7 +133,7 @@ namespace Proekt1
                 {
                     try
                     {
-                       comand.ExecuteNonQuery();
+                        comand.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
@@ -124,7 +144,7 @@ namespace Proekt1
                 {
                     try
                     {
-                       comand.ExecuteNonQuery();
+                        comand.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
@@ -157,7 +177,7 @@ namespace Proekt1
                 {
                     try
                     {
-                       comand.ExecuteNonQuery();
+                        comand.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
@@ -200,7 +220,7 @@ namespace Proekt1
                 {
                     try
                     {
-                         comand.ExecuteNonQuery();
+                        comand.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
@@ -452,19 +472,19 @@ namespace Proekt1
 
         static void Zaqvka1()
         {
+            //1.Намиране на брой актьори по име
             Console.WriteLine("Ваведете името което искате да проверите дали съществува:");
             string name = Console.ReadLine();
-            string sql = $"SELECT COUNT(*)\r\nFROM [Actors]\r\nWHERE [First_name] = '{name}';";
+            string sql = $"SELECT COUNT(*) FROM [Actors] WHERE [First_name] = @name;";
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             using (connection)
             {
                 using (SqlCommand comand = new SqlCommand(sql, connection))
                 {
-                    
+                    comand.Parameters.AddWithValue("@name", name);
                     using (SqlDataReader reader = comand.ExecuteReader())
                     {
-                        
                         while (reader.Read())
                         {
                             Console.WriteLine($"Има {reader[0]} актьор(и) с името {name} ");
@@ -476,18 +496,17 @@ namespace Proekt1
 
         static void Zaqvka2()
         {
+            //2.Изпечатване на всички театри
             Console.WriteLine("Всички театри ваведени в системата:");
-            string sql = $"SELECT *\r\nFROM [Teathers];";
+            string sql = $"SELECT * FROM [Teathers];";
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             using (connection)
             {
                 using (SqlCommand comand = new SqlCommand(sql, connection))
                 {
-
                     using (SqlDataReader reader = comand.ExecuteReader())
                     {
-
                         while (reader.Read())
                         {
                             Console.WriteLine($"{reader[1]}");
@@ -499,18 +518,19 @@ namespace Proekt1
 
         static void Zaqvka3()
         {
+            //3.Намери в кой театър кои актьори играят 
             Console.WriteLine("Ваведете teatyr, в който искате да видите актьорския състав :");
             string name = Console.ReadLine();
-            string sql = $"SELECT a.First_name, a.Last_name\r\nFROM Teathers t\r\nJOIN Unite u ON t.Id_Teathers = u.Id_Teathers\r\nJOIN Actors a ON u.Id_Actors = a.Id_Actors\r\nWHERE t.[Name] = N'{name}'";
+            string sql = $"SELECT a.First_name, a.Last_name FROM Teathers t JOIN Unite u ON t.Id_Teathers = u.Id_Teathers JOIN Actors a ON u.Id_Actors = a.Id_Actors WHERE t.[Name] = @name";
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             using (connection)
             {
                 using (SqlCommand comand = new SqlCommand(sql, connection))
                 {
+                    comand.Parameters.AddWithValue("@name", name);
                     using (SqlDataReader reader = comand.ExecuteReader())
                     {
-
                         while (reader.Read())
                         {
                             Console.WriteLine($"{reader[0]} {reader[1]}");
@@ -522,18 +542,19 @@ namespace Proekt1
 
         static void Zaqvka4()
         {
+            //4.Намиране по град колго броя актьори са в него
             Console.WriteLine("Ваведете град :");
             string city = Console.ReadLine();
-            string sql = $"SELECT \r\n    t.City,\r\n    COUNT(DISTINCT a.Id_Actors) AS ActorsCount\r\nFROM Teathers t\r\nJOIN Unite u ON t.Id_Teathers = u.Id_Teathers\r\nJOIN Actors a ON u.Id_Actors = a.Id_Actors\r\nWHERE t.City = N'{city}'\r\nGROUP BY t.City;";
+            string sql = $"SELECT t.City,COUNT(DISTINCT a.Id_Actors) AS ActorsCount FROM Teathers t JOIN Unite u ON t.Id_Teathers = u.Id_Teathers JOIN Actors a ON u.Id_Actors = a.Id_Actors WHERE t.City = @city GROUP BY t.City;";
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             using (connection)
             {
                 using (SqlCommand comand = new SqlCommand(sql, connection))
                 {
+                    comand.Parameters.AddWithValue("@city", city);
                     using (SqlDataReader reader = comand.ExecuteReader())
                     {
-
                         while (reader.Read())
                         {
                             Console.WriteLine($"{reader[1]}");
@@ -545,18 +566,19 @@ namespace Proekt1
 
         static void Zaqvka5()
         {
+            //5.Намери театрите по ваведена година
             Console.WriteLine("Ваведете година :");
             int year = int.Parse(Console.ReadLine());
-            string sql = $"SELECT Name, Year_Creation, City\r\nFROM Teathers \r\nWHERE Year_Creation = '{year}';";
+            string sql = $"SELECT Name, Year_Creation, City FROM Teathers WHERE Year_Creation = @year;";
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             using (connection)
             {
                 using (SqlCommand comand = new SqlCommand(sql, connection))
                 {
+                    comand.Parameters.AddWithValue("@year", year);
                     using (SqlDataReader reader = comand.ExecuteReader())
                     {
-
                         while (reader.Read())
                         {
                             Console.WriteLine($"{reader[2]}");
@@ -568,18 +590,19 @@ namespace Proekt1
 
         static void Zaqvka6()
         {
+            //6.Намери театъра по ваведен град
             Console.WriteLine("Ваведете град :");
             string city = Console.ReadLine();
-            string sql = $"SELECT [Name], Year_Creation, City\r\nFROM Teathers \r\nWHERE City = N'{city}';";
+            string sql = $"SELECT [Name], Year_Creation, City FROM Teathers WHERE City = @city;";
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             using (connection)
             {
                 using (SqlCommand comand = new SqlCommand(sql, connection))
                 {
+                    comand.Parameters.AddWithValue("@city", city);
                     using (SqlDataReader reader = comand.ExecuteReader())
                     {
-
                         while (reader.Read())
                         {
                             Console.WriteLine($"{reader[0]}");
@@ -589,6 +612,112 @@ namespace Proekt1
             }
         }
 
+        static void Zaqvka7()
+        {
+            //7.Намери акьора в кои пиеси играе
+            Console.WriteLine("Въведете име на актьор:");
+            string firstName = Console.ReadLine();
+            Console.WriteLine("Въведете фамилия на актьор:");
+            string lastName = Console.ReadLine();
+
+            string sql = @"
+                            SELECT p.Title 
+                            FROM Plays p
+                            JOIN Unite_Plays up ON p.Id_Plays = up.Id_Plays
+                            JOIN Actors a ON up.Id_Actors = a.Id_Actors
+                            WHERE a.First_name = @firstName AND a.Last_name = @lastName;";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlCommand comand = new SqlCommand(sql, connection))
+                {
+                    comand.Parameters.AddWithValue("@firstName", firstName);
+                    comand.Parameters.AddWithValue("@lastName", lastName);
+
+                    using (SqlDataReader reader = comand.ExecuteReader())
+                    {
+                        while (reader.Read()) 
+                        {
+                            // Повтарят се два пъти, защото така са ваведени в таблиците
+                            Console.WriteLine($"{reader[0]}");
+                        }
+                    }
+                }
+            }
+        }
+        
+        static void Zaqvka8()
+        {
+            //8.Намери всички актори които са ваведени в таблицата
+            Console.WriteLine("Всички актьори:");
+            string sql = $"SELECT * FROM [Actors];";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                using (SqlCommand comand = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = comand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"{reader[0]} {reader[1]}");
+                        }
+                    }
+                }
+            }
+        }
+
+        static void Zaqvka9()
+        {
+            //9.Намери актьора в кой театър е 
+            Console.WriteLine("Ваведете име на акьора:");
+            string firstName = Console.ReadLine();
+            string lastName = Console.ReadLine();
+            string sql = $"SELECT t.[Name] AS [Theater_Name]\r\nFROM [Actors] a\r\nJOIN [Unite] u ON a.[Id_Actors] = u.[Id_Actors]\r\nJOIN [Teathers] t ON u.[Id_Teathers] = t.[Id_Teathers]\r\nWHERE a.[First_name] = @firstName AND a.[Last_name] = @lastName;";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                using (SqlCommand comand = new SqlCommand(sql, connection))
+                {
+                    comand.Parameters.AddWithValue("@firstName", firstName);
+                    comand.Parameters.AddWithValue("@lastName", lastName);
+                    using (SqlDataReader reader = comand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"{reader[0]}");
+                        }
+                    }
+                }
+            }
+        }
+
+        static void Zaqvka10()
+        {
+            //10.При вавеждане на град да ми извежда актьорите от този град кои постановки играят и в кой театър
+            Console.WriteLine("Ваведете град :");
+            string city = Console.ReadLine();
+            string sql = $"SELECT a.[First_name], a.[Last_name], p.[Title] AS [Play_Title], t.[Name] AS [Theater_Name]\r\nFROM [Actors] a\r\nJOIN [Unite_Plays] up ON a.[Id_Actors] = up.[Id_Actors]  \r\nJOIN [Plays] p ON up.[Id_Plays] = p.[Id_plays] \r\nJOIN [Unite] u ON a.[Id_Actors] = u.[Id_Actors] \r\nJOIN [Teathers] t ON u.[Id_Teathers] = t.[Id_Teathers] \r\nWHERE t.[City] = @city; ";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                using (SqlCommand comand = new SqlCommand(sql, connection))
+                {
+                    comand.Parameters.AddWithValue("@city", city);
+                    using (SqlDataReader reader = comand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"{reader[0]} {reader[1]} {reader[2]} {reader[3]}");
+                        }
+                    }
+                }
+            }
+        }
 
         //1.Намиране на брой актьори по име
         //2.Изпечатване на всички театри
@@ -596,9 +725,10 @@ namespace Proekt1
         //4.Намиране по град колго броя актьори са в него
         //5.Намери театрите по ваведена година
         //6.Намери театъра по ваведен град
-        //Намери по театър, в този театър кои песи се играят
-        //Намери по пиеса, кои актьори играят
-        //Брой актьори във всеки град:
+        //7.Намери акьора в кои пиеси играе
+        //8.Намери всички актори които са ваведени в таблицата
+        //9.намери актьора в кой театър е 
+        //10.При вавеждане на град да ми извежда актьорите от този град кои постановки играят и в кой театър
 
 
     }
